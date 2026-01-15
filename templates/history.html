@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Translation History</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+    <h1>Translation History</h1>
+    <div style="text-align:center;margin-bottom:20px;">
+        <a href="/dashboard">Dashboard</a> | 
+        <a href="/logout">Logout</a>
+    </div>
+
+    {% if data %}
+    <table>
+        <tr>
+            <th>Input Text</th>
+            <th>Translated Text</th>
+            <th>Language</th>
+        </tr>
+        {% for row in data %}
+        <tr>
+            <td>{{ row[0] }}</td>
+            <td>{{ row[1] }}</td>
+            <td>{{ row[2] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <p style="text-align:center;color:#ccc;">No history found yet.</p>
+    {% endif %}
+</div>
+</body>
+</html>

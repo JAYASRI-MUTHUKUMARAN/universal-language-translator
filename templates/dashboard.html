@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Dashboard</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<div class="container">
+<h1>Universal Translator</h1>
+<a href="/logout">Logout</a> | <a href="/history">History</a>
+
+<!-- Text Translation -->
+<div class="section">
+<h2>Text Translation</h2>
+<textarea id="textInput" placeholder="Enter text here"></textarea><br>
+<select id="textLang">
+{% for code,name in languages.items() %}
+<option value="{{ code }}">{{ name }}</option>
+{% endfor %}
+</select><br>
+<button onclick="translateText()">Translate</button>
+<button onclick="speakText()">Speak</button>
+<button onclick="clearText()">Clear</button>
+<p id="translatedText"></p>
+<audio id="audioPlayer" controls style="display:none;"></audio>
+</div>
+
+<!-- Image Translation -->
+<div class="section">
+<h2>Image Translation</h2>
+<input type="file" id="imageInput"><br>
+<select id="imgLang">
+{% for code,name in languages.items() %}
+<option value="{{ code }}">{{ name }}</option>
+{% endfor %}
+</select><br>
+<button onclick="translateImage()">Translate Image</button>
+<button onclick="speakImage()">Speak Image Text</button>
+<p id="imageText"></p>
+</div>
+
+<!-- JS -->
+<script>
+function translateText(){
+    let text = $("#textInput").val();
+    let lang = $("#textLang").val();
+    $.post("/translate",{text:text,language:lang},function(data){
+        $("#translatedText").text(data.translated);
+    });
+}
+function speakText(){
+    let text = $("#textInput").val();
+    let lang = $("#textLang").val();
+    $.post("/speak",{text:text,language:lang},function(data){
+        $("#audioPlayer").attr("src",data.audio).show()[0].play();
+    });
+}
+function clearText(){
+    $("#textInput").val("");
+    $("#translatedText").text("");
+    $("#audioPlayer").hide();
+}
+function translateImage(){
+    let file = $("#imageInput")[0].files[0];
+    if(!file){alert("Select an image"); return;}
+    let lang = $("#imgLang").val();
+    let form = new FormData();
+    form.append("image",file);
+    form.append("language",lang);
+    $.ajax({
+        url:"/image-text",
+        type:"POST",
+        data:form,
+        contentType:false,
+        processData:false,
+        success:function(data){
+            $("#imageText").text("Text: "+data.text+"\nTranslated: "+data.translated);
+        }
+    });
+}
+function speakImage(){
+    let text = $("#imageText").text().split("Translated: ")[1];
+    let lang = $("#imgLang").val();
+    if(!text){alert("Translate image first"); return;}
+    $.post("/image-voice",{text:text,language:lang},function(data){
+        $("#audioPlayer").attr("src",data.audio).show()[0].play();
+    });
+}
+</script>
+</body>
+</html>

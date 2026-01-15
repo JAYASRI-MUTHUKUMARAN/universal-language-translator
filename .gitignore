@@ -1,0 +1,19 @@
+# Python
+*.pyc
+__pycache__/
+
+# Virtual environment
+.venv/
+env/
+venv/
+
+# MySQL database
+*.db
+
+# Audio / Uploads
+static/audio/
+static/uploads/
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Universal Translator</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="navbar">
+    <span>Welcome, {{ username }}</span>
+    <a href="{{ url_for('history') }}">History</a>
+    <a href="{{ url_for('logout') }}">Logout</a>
+</div>
+
+<div class="container">
+    <!-- Text Translation -->
+    <div class="feature-box">
+        <h3>Text Translation</h3>
+        <textarea id="text-input" placeholder="Enter text here"></textarea>
+        <div class="buttons">
+            <button onclick="clearText()">Clear</button>
+            <button onclick="translateText()">Translate</button>
+        </div>
+        <p id="translated-text"></p>
+    </div>
+
+    <!-- Image to Text -->
+    <div class="feature-box">
+        <h3>Image to Text</h3>
+        <input type="file" id="image-input" accept="image/*">
+        <div class="buttons">
+            <button onclick="imageTranslate()">Translate</button>
+            <button onclick="imageClear()">Clear</button>
+        </div>
+        <p id="image-text"></p>
+    </div>
+
+    <!-- Voice to Text -->
+    <div class="feature-box">
+        <h3>Voice to Text</h3>
+        <button onclick="startSpeech()">Speak</button>
+        <button onclick="clearVoice()">Clear</button>
+        <p id="voice-text"></p>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
