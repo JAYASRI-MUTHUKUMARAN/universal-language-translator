@@ -1,6 +1,6 @@
 Flask==3.0.0
 gunicorn==21.2.0
-googletrans==4.0.0rc1
+googletrans==4.0.0-rc1
 gTTS==2.5.1
 SpeechRecognition==3.10.0
 pytesseract==0.3.10
